@@ -1,6 +1,5 @@
-# Atividade Remota — Máquinas de Turing
+# Atividade Remota - Inteligência Artificial, Linguagens Formais e Automatos
 
-Disciplina: Teoria da Computação
 Tema: Máquinas de Turing
 
 ## Sobre o projeto
@@ -41,6 +40,4 @@ A cada rodada, a máquina apaga o primeiro 0 da esquerda e o último 1 da direit
 | 2 | 000111 | ACEITA | ACEITA |
 | 3 | 00111 | REJEITA | REJEITA |
 
-## Autor
-
-[SEU NOME]
+Por Letícia Castro de Souza
