@@ -1,0 +1,47 @@
+Etapa 1 - Introdução
+1. O que é uma Máquina de Turing?
+É um modelo matemático de computação proposto por Alan Turing em 1936. Ela imagina um dispositivo extremamente simples, que lê e escreve símbolos em uma fita, um passo de cada vez, obedecendo a uma tabela fixa de regras. Apesar dessa simplicidade, o modelo consegue representar qualquer procedimento que possa ser executado de forma mecânica, e por isso serve como definição formal do que significa “computar”.
+2. Quais são os principais componentes de uma Máquina de Turing?
+•	Fita: dividida em células e potencialmente infinita; guarda a entrada e também funciona como memória de trabalho.
+•	Alfabeto: conjunto de símbolos que podem aparecer na fita, incluindo o símbolo em branco.
+•	Cabeça de leitura/escrita: lê o símbolo da célula atual, pode sobrescrevê-lo e se move uma célula para a esquerda ou para a direita.
+•	Conjunto de estados: representa a “situação” da máquina; inclui um estado inicial e um ou mais estados de aceitação.
+•	Função (regras) de transição: dado o estado atual e o símbolo lido, define o que escrever, para onde mover a cabeça e qual será o próximo estado.
+3. Qual é a importância das Máquinas de Turing para a computação?
+Elas deram uma definição rigorosa de algoritmo e de função computável, o que é a base da Teoria da Computação. Com esse modelo foi possível provar que existem problemas sem solução algorítmica, ou seja, que a computação tem limites. Além disso, a ideia da máquina universal (uma máquina capaz de executar a descrição de qualquer outra) antecipa o conceito de computador programável de propósito geral, que é o que diferencia um computador de uma calculadora, como discutido no vídeo. Os computadores atuais, baseados na arquitetura de Von Neumann, são a realização prática dessa ideia.
+4. Qual é a relação entre Máquina de Turing e algoritmo?
+Um algoritmo é uma sequência finita e bem definida de passos para resolver um problema. A Máquina de Turing é a formalização matemática desse conceito: cada máquina específica é um algoritmo escrito na forma de estados e transições, e as funções que podem ser calculadas por alguma Máquina de Turing são chamadas de funções computáveis. A Tese de Church-Turing afirma que tudo o que pode ser calculado por um procedimento algorítmico também pode ser calculado por uma Máquina de Turing.
+
+Etapa 2 - Simulação: máquina para 0ⁿ1ⁿ
+Descrição da Máquina de Turing criada
+A máquina criada reconhece a linguagem L = { 0ⁿ1ⁿ | n ≥ 1 }, isto é, palavras formadas por uma sequência de zeros seguida do mesmo número de uns. A estratégia é “apagar nas duas pontas”: a cada rodada, a máquina apaga o primeiro 0 da esquerda e o último 1 da direita. Se a fita ficar completamente vazia, cada 0 teve um 1 correspondente e a palavra é aceita. Se em algum momento sobrar um símbolo sem par, ou a ordem estiver errada, a máquina fica sem transição possível e rejeita.
+Definição formal: M = (Q, Σ, Γ, δ, q0, ␣, F), em que Q = {q0, q1, q2, q3, accept}; Σ = {0, 1}; Γ = {0, 1, ␣}; q0 é o estado inicial; ␣ é o símbolo em branco; F = {accept}; e δ é dada pela tabela abaixo.
+Estado	Lê	Escreve	Move	Próximo	Função do passo
+q0	0	␣ (branco)	Direita	q1	Apaga o 0 da extremidade esquerda
+q0	␣	␣	Direita	accept	Fita vazia: todos os pares foram casados
+q1	0 ou 1	o mesmo	Direita	q1	Percorre a palavra até o seu fim
+q1	␣	␣	Esquerda	q2	Chegou ao fim; recua para o último símbolo
+q2	1	␣ (branco)	Esquerda	q3	Apaga o 1 da extremidade direita
+q3	0 ou 1	o mesmo	Esquerda	q3	Volta em direção ao início da palavra
+q3	␣	␣	Direita	q0	Achou a borda esquerda; inicia nova rodada
+
+Casos sem transição (a máquina para sem aceitar, ou seja, REJEITA): q0 lendo 1 (a palavra começa com 1 ou há 1 sobrando à esquerda) e q2 lendo 0 ou branco (falta 1 para casar com o 0 apagado).
+Código da máquina no simulador (turingmachine.io)
+input: '0011'
+blank: ' '
+start state: q0
+table:
+  q0:
+    0: {write: ' ', R: q1}
+    ' ': {R: accept}
+  q1:
+    [0, 1]: R
+    ' ': {L: q2}
+  q2:
+    1: {write: ' ', L: q3}
+  q3:
+    [0, 1]: L
+    ' ': {R: q0}
+  accept:
+
+
